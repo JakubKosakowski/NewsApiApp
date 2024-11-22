@@ -1,0 +1,17 @@
+{
+    "name": "jakub/backend",
+    "autoload": {
+        "psr-4": {
+            "Jakub\\Backend\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "JakubKosakowski",
+            "email": "jkosakowski602@gmail.com"
+        }
+    ],
+    "require": {
+        "jcobhams/newsapi": "^1.0"
+    }
+}
