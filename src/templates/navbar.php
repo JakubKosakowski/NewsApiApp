@@ -1,6 +1,6 @@
 <?php
 $countries = $newsapi->getCountries();
-
+$countriesJSON = json_decode(file_get_contents(dirname(__DIR__)."\countries.json"));
 ?>
 <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
@@ -15,13 +15,13 @@ $countries = $newsapi->getCountries();
         </li>
         <li class="nav-item dropdown">
           <button class="btn btn-primary dropdown-toggle" type="button" id="country" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src=<?="https://newsapi.org/images/flags/$selectedCountry.svg"?> width="20" height="20" class="icon loaded"?>
+            <img src=<?="https://newsapi.org/images/flags/$selectedCountry.svg"?> width="20" height="20" class="icon loaded" alt="<?=$countriesJSON->$selectedCountry?>"?>
           </button>
           <ul class="dropdown-menu" id="country_list" aria-labelledby="country" style="min-width: 400px;">
             <?php foreach($countries as $country): ?>
               <li style="display: inline-block">
-                <a class="dropdown-item" href="?country=<?=$country?>">
-                  <img src=<?="https://newsapi.org/images/flags/$country.svg"?> width="20" height="20" class="icon loaded"?>
+                <a class="dropdown-item" href="?country=<?=$country?>" title="<?=$countriesJSON->$country?>">
+                  <img src=<?="https://newsapi.org/images/flags/$country.svg"?> width="20" height="20" class="icon loaded" alt="<?=$countriesJSON->$country?>"?>
                 </a>
               </li>
             <?php endforeach ?>
