@@ -21,6 +21,30 @@
         exit();
     }
 
+    function tryRegister(PDO $pdo, $username, $email, $password) {
+        $errors = [];
+        $sql = "SELECT id FROM users WHERE username = :username OR email = :email;";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':username' => $username, ':email' => $email]);
+        $existUser = $stmt->fetchColumn();
+
+        if($existUser !== false) {
+            $errors[] = "There is a user with that username or email.";
+        }
+        if(strlen($password) < 8) {
+            $errors[] = "The password must contain more than 8 letters and characters.";
+        }
+
+        if(!$errors) {
+            $sql = "INSERT INTO users(username, email, password) VALUES(:username, :email, :password);";
+            $stmt = $pdo->prepare($sql);
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            $stmt->execute([':username' => $username, ':email' => $email, ':password' => $hash]);
+            return [true, $errors];
+        }
+        return [false, $errors];
+    }
+
     function tryLogin(PDO $pdo, $username, $password) {
         $sql = "
             SELECT
