@@ -17,10 +17,8 @@ if(isset($_GET['country'])) {
 $i = 1;
 
 // $usTopHeadlines = $newsapi->getTopHeadLines($country=$selectedCountry);]
-$source = "bbc-news";
-$usTopHeadlines = $newsapi->getEverything($q="", $source);
+$usTopHeadlines = $newsapi->getTopHeadlines($country=$selectedCountry);
 $articles = $usTopHeadlines->articles;
-var_dump($articles[0]);
 
 ?>
 <!DOCTYPE html>
