@@ -1,25 +1,25 @@
 <?php
 require_once '../vendor/autoload.php';
 require "lib/common.php";
-require "lib/install.php";
-
-session_start();
-$_SESSION['show-countries'] = true;
+require "../src/lib/fetch.php";
 
 use jcobhams\NewsApi\NewsApi;
 
 $newsapi = new NewsAPI(getApiKey());
 
-$selectedCountry="us";
-if(isset($_GET['country'])) {
-  $selectedCountry = $_GET['country'];
+session_start();
+
+unset($_SESSION['show-countries']);
+
+$selectedCategory="general";
+if(isset($_GET['category'])) {
+    $selectedCategory = $_GET['category'];
 }
 $i = 1;
-
-// $usTopHeadlines = $newsapi->getTopHeadLines($country=$selectedCountry);]
-$usTopHeadlines = $newsapi->getTopHeadlines($country=$selectedCountry);
+// $allSources = $newsapi->getSources($category=$selectedCategory, $country="pl");
+// var_dump($allSources);
+$usTopHeadlines = $newsapi->getEverything($q=$selectedCategory, $sources="wired");
 $articles = $usTopHeadlines->articles;
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,6 +33,7 @@ $articles = $usTopHeadlines->articles;
     <?php require "../src/templates/navbar.php"; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     <div class="container">
+    <h1><?=ucfirst($selectedCategory)?></h1>
       <div class="row">
         <?php foreach($articles as $article): ?>
           <?php if($i == 4): ?>

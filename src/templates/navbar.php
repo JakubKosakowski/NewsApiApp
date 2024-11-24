@@ -1,6 +1,7 @@
 <?php
 $countries = $newsapi->getCountries();
 $countriesJSON = json_decode(file_get_contents(dirname(__DIR__)."\countries.json"));
+$categories = $newsapi->getCategories();
 ?>
 <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
@@ -14,19 +15,31 @@ $countriesJSON = json_decode(file_get_contents(dirname(__DIR__)."\countries.json
           <a class="nav-link" href="/about.php">About</a>
         </li>
         <li class="nav-item dropdown">
-          <button class="btn btn-primary dropdown-toggle" type="button" id="country" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src=<?="https://newsapi.org/images/flags/$selectedCountry.svg"?> width="20" height="20" class="icon loaded" alt="<?=$countriesJSON->$selectedCountry?>"?>
+          <button class="nav-link dropdown-toggle" id="navbarDropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Categories
           </button>
-          <ul class="dropdown-menu" id="country_list" aria-labelledby="country" style="min-width: 400px;">
-            <?php foreach($countries as $country): ?>
-              <li style="display: inline-block">
-                <a class="dropdown-item" href="?country=<?=$country?>" title="<?=$countriesJSON->$country?>">
-                  <img src=<?="https://newsapi.org/images/flags/$country.svg"?> width="20" height="20" class="icon loaded" alt="<?=$countriesJSON->$country?>"?>
-                </a>
-              </li>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <?php foreach($categories as $category): ?>
+              <a class="dropdown-item" href="/category-articles.php?category=<?=$category?>"><?=ucfirst($category)?></a>
             <?php endforeach ?>
-          </ul>
+          </div>
         </li>
+        <?php if(isset($_SESSION['show-countries'])): ?>
+          <li class="nav-item dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="country" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src=<?="https://newsapi.org/images/flags/$selectedCountry.svg"?> width="20" height="20" class="icon loaded" alt="<?=$countriesJSON->$selectedCountry?>"?>
+            </button>
+            <ul class="dropdown-menu" id="country_list" aria-labelledby="country" style="min-width: 400px;">
+              <?php foreach($countries as $country): ?>
+                <li style="display: inline-block">
+                  <a class="dropdown-item" href="?country=<?=$country?>" title="<?=$countriesJSON->$country?>">
+                    <img src=<?="https://newsapi.org/images/flags/$country.svg"?> width="20" height="20" class="icon loaded" alt="<?=$countriesJSON->$country?>"?>
+                  </a>
+                </li>
+              <?php endforeach ?>
+            </ul>
+          </li>
+        <?php endif ?>
       </ul>
       <?php if(isLoggedIn()): ?>
           <ul class="navbar-nav">
