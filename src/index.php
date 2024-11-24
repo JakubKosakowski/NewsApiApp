@@ -4,6 +4,7 @@ require "lib/common.php";
 require "lib/install.php";
 
 session_start();
+$_SESSION['show-countries'] = true;
 
 use jcobhams\NewsApi\NewsApi;
 
@@ -15,8 +16,11 @@ if(isset($_GET['country'])) {
 }
 $i = 1;
 
-$usTopHeadlines = $newsapi->getTopHeadLines($country=$selectedCountry);
+// $usTopHeadlines = $newsapi->getTopHeadLines($country=$selectedCountry);]
+$source = "bbc-news";
+$usTopHeadlines = $newsapi->getEverything($q="", $source);
 $articles = $usTopHeadlines->articles;
+var_dump($articles[0]);
 
 ?>
 <!DOCTYPE html>
