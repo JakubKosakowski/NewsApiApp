@@ -9,16 +9,25 @@ $newsapi = new NewsAPI(getApiKey());
 
 session_start();
 
-unset($_SESSION['show-countries']);
-
 $selectedCategory="general";
 if(isset($_GET['category'])) {
     $selectedCategory = $_GET['category'];
 }
+$selectedLanguage="en";
+if(isset($_GET['language'])) {
+  $selectedLanguage = $_GET['language'];
+}
 $i = 1;
-// $allSources = $newsapi->getSources($category=$selectedCategory, $country="pl");
+$allSources = $newsapi->getSources($category=$selectedCategory);
+$languageSources = [];
+foreach($allSources->sources as $source) {
+  if($source->language == $selectedLanguage) {
+    var_dump($source);
+    $languageSources[] = $source->id;
+  }
+}
 // var_dump($allSources);
-$usTopHeadlines = $newsapi->getEverything($q=$selectedCategory, $sources="wired");
+$usTopHeadlines = $newsapi->getEverything($language=$selectedLanguage);
 $articles = $usTopHeadlines->articles;
 ?>
 <!DOCTYPE html>
