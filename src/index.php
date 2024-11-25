@@ -3,21 +3,23 @@ require_once '../vendor/autoload.php';
 require "lib/common.php";
 require "lib/install.php";
 
+use jcobhams\NewsApi\NewsApi;
+
 session_start();
 $_SESSION['show-countries'] = true;
 
-use jcobhams\NewsApi\NewsApi;
-
 $newsapi = new NewsAPI(getApiKey());
 
-$selectedCountry="us";
-if(isset($_GET['country'])) {
-  $selectedCountry = $_GET['country'];
+$selectedLanguage="en";
+if(isset($_GET['language'])) {
+  $selectedLanguage = $_GET['language'];
 }
 $i = 1;
 
+$selectedCategory="general";
+
 // $usTopHeadlines = $newsapi->getTopHeadLines($country=$selectedCountry);]
-$usTopHeadlines = $newsapi->getTopHeadlines($country=$selectedCountry);
+$usTopHeadlines = $newsapi->getTopHeadlines($country="us");
 $articles = $usTopHeadlines->articles;
 
 ?>
