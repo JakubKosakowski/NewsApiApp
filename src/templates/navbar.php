@@ -26,20 +26,26 @@ $categories = $newsapi->getCategories();
             <?php endforeach ?>
           </div>
         </li>
-          <li class="nav-item dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="language" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src=<?="https://newsapi.org/images/flags/".$languagesJSON->$selectedLanguage.".svg"?> width="20" height="20" class="icon loaded"?>
-            </button>
-            <ul class="dropdown-menu" id="language_list" aria-labelledby="country" style="min-width: 400px;">
-              <?php foreach($languages as $language): ?>
-                <li style="display: inline-block">
-                  <a class="dropdown-item" href="?language=<?=$language?>">
-                    <img src=<?="https://newsapi.org/images/flags/".$languagesJSON->$language.".svg"?> width="20" height="20" class="icon loaded"?>
-                  </a>
-                </li>
-              <?php endforeach ?>
-            </ul>
-          </li>
+        <li class="nav-item dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="language" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src=<?="https://newsapi.org/images/flags/".$languagesJSON->$selectedLanguage.".svg"?> width="20" height="20" class="icon loaded"?>
+          </button>
+          <ul class="dropdown-menu" id="language_list" aria-labelledby="country" style="min-width: 400px;">
+            <?php foreach($languages as $language): ?>
+              <li style="display: inline-block">
+                <a class="dropdown-item" href="?language=<?=$language?>">
+                  <img src=<?="https://newsapi.org/images/flags/".$languagesJSON->$language.".svg"?> width="20" height="20" class="icon loaded"?>
+                </a>
+              </li>
+            <?php endforeach ?>
+          </ul>
+        </li>
+        <?php if (str_contains($_SERVER['PHP_SELF'], "category")): ?>
+          <form class="form-inline my-2 my-lg-0 d-flex ml-2" method="POST">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" name="search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        <?php endif?>
       </ul>
       <?php if(isLoggedIn()): ?>
           <ul class="navbar-nav">
