@@ -6,10 +6,14 @@ require "../src/lib/fetch.php";
 use jcobhams\NewsApi\NewsApi;
 
 $newsapi = new NewsAPI(getApiKey());
+$search = "general";
+if($_POST) {
+  $search = $_POST['search'];
+}
 
 session_start();
 
-$selectedCategory="general";
+$selectedCategory="";
 if(isset($_GET['category'])) {
     $selectedCategory = $_GET['category'];
 }
@@ -22,13 +26,21 @@ $allSources = $newsapi->getSources($category=$selectedCategory);
 $languageSources = [];
 foreach($allSources->sources as $source) {
   if($source->language == $selectedLanguage) {
-    var_dump($source);
     $languageSources[] = $source->id;
   }
 }
-// var_dump($allSources);
-$usTopHeadlines = $newsapi->getEverything($language=$selectedLanguage);
-$articles = $usTopHeadlines->articles;
+$headlines = [];
+$searchScope = count($languageSources) >= 3 ? 3 : count($languageSources);
+for($i = 0; $i < 3; $i++) {
+  $headlines[] = $newsapi->getEverything($q=$search ? $search : $selectedCategory, $sources=$languageSources[$i], $language=$selectedLanguage);
+}
+$articles = [];
+foreach($headlines as $headline) {
+  $searchScope = count($headline->articles) >= 5 ? 5 : count($headline->articles);
+  for($i = 0; $i < $searchScope; $i++) {
+    $articles[] = $headline->articles[$i];
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
